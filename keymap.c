@@ -2,8 +2,8 @@
 #include "version.h"
 
 #ifdef AUDIO_ENABLE
-#include "audio.h"
-#include "song_list.h"
+#    include "audio.h"
+#    include "song_list.h"
 float foo[][2] = SONG(MUSIC_ON_SOUND);
 #endif
 
@@ -11,6 +11,7 @@ enum layers {
     QW, // base layer
     CL,
     SYMB,
+    NUM,
     NAV,
     MOUSE,
     MEDIA,
@@ -20,23 +21,22 @@ enum layers {
 /*     MY_LED_LEVEL = ML_SAFE_RANGE */
 /* }; */
 
-
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [QW] = LAYOUT_moonlander(
         KC_GRV,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5, KC_BRIU,    KC_VOLU,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0, KC_BSPC,
-        KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T, KC_BRID,    KC_VOLD,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, KC_BSLS,
+        KC_TAB,    KC_Q,    KC_W,    LT(NUM, KC_E),    LT(SYMB, KC_R),    KC_T, KC_BRID,    KC_VOLD,    KC_Y,    LT(SYMB, KC_U),    LT(NUM, KC_I),    KC_O,    KC_P, KC_BSLS,
 
         MT(MOD_LCTL, KC_ESC), MT(MOD_LGUI, KC_A), MT(MOD_LALT, KC_S), MT(MOD_LSFT, KC_D), MT(MOD_LCTL, KC_F), KC_G, TO(CL),
         KC_MUTE, KC_H, MT(MOD_RCTL, KC_J), MT(MOD_RSFT, KC_K), MT(MOD_RALT, KC_L), MT(MOD_RGUI, KC_SCLN), KC_QUOT,
 
         SC_LSPO,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, SC_RSPC,
-        CW_TOGG, QK_LEAD, _______, KC_LGUI, KC_LALT,          RGB_RMOD,    RGB_MOD,   DM_REC1, DM_REC2, DM_PLY1, DM_PLY2, DM_RSTP,
-        LT(SYMB, KC_SPC), LT(NAV, KC_BSPC), LT(MOUSE, KC_DEL),    MO(MEDIA), LT(NAV, KC_ENT), LT(SYMB, KC_SPC)
+        CW_TOGG, QK_LEAD, _______, KC_LGUI, KC_LALT,          RGB_RMOD,    RGB_MOD,   KC_RALT, KC_RGUI, _______, _______, _______,
+        LT(SYMB, KC_SPC), LT(NAV, KC_ENT), LT(MOUSE, KC_DEL),    MO(MEDIA), LT(NAV, KC_ENT), LT(SYMB, KC_SPC)
         ),
     [CL] = LAYOUT_moonlander(
         KC_GRV,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5, _______,    _______,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0, KC_BSPC,
-        _______,    KC_Q,    KC_W,    KC_F,    KC_P,    KC_B, _______,    _______,    KC_J,    KC_L,    KC_U,    KC_Y, KC_SCLN, _______,
+        _______,    KC_Q,    KC_W,    LT(NUM, KC_F),    LT(SYMB, KC_P),    KC_B, _______,    _______,    KC_J,    LT(SYMB, KC_L),    LT(NUM, KC_U),    KC_Y, KC_SCLN, _______,
 
         _______, MT(MOD_LGUI, KC_A), MT(MOD_LALT, KC_R), MT(MOD_LSFT, KC_S), MT(MOD_LCTL, KC_T), KC_G, TO(QW),
         _______, KC_M, MT(MOD_RCTL, KC_N), MT(MOD_RSFT, KC_E), MT(MOD_RALT, KC_I), MT(MOD_RGUI, KC_O), KC_QUOT,
@@ -47,13 +47,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         ),
     [SYMB] = LAYOUT_moonlander(
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-        _______,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5, _______,    _______,   KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10, XXXXXXX,
-        KC_ESC, KC_LABK, KC_LCBR, KC_LBRC, KC_LPRN, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, KC_RPRN, KC_RBRC, KC_RCBR, KC_RABK, KC_QUOT,
-
-
+        XXXXXXX,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5, XXXXXXX,    XXXXXXX,   KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10, XXXXXXX,
+        KC_ESC,  KC_LABK, KC_LCBR, KC_LBRC, KC_LPRN, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, KC_RPRN, KC_RBRC, KC_RCBR, KC_RABK, KC_QUOT,
         XXXXXXX, XXXXXXX, XXXXXXX, KC_UNDS, KC_MINS, XXXXXXX,                      XXXXXXX,  KC_EQL, KC_PLUS, XXXXXXX, XXXXXXX, XXXXXXX,
         _______, _______, _______, _______, _______,          _______,    _______,          _______, _______, _______, _______, _______,
         _______, XXXXXXX, XXXXXXX,          XXXXXXX, XXXXXXX, _______
+        ),
+	[NUM] = LAYOUT_moonlander(
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+        XXXXXXX,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5, XXXXXXX,    XXXXXXX,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0, XXXXXXX,
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+        _______, _______, _______, _______, _______,          _______,    _______,          _______, _______, _______, _______, _______,
+        XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX, XXXXXXX, XXXXXXX
         ),
     [NAV] = LAYOUT_moonlander(
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
@@ -72,11 +78,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         XXXXXXX, XXXXXXX, _______,          KC_BTN3, KC_BTN1, KC_BTN2
         ),
     [MEDIA] = LAYOUT_moonlander(
-        XXXXXXX, RGB_M_P, RGB_M_B,  RGB_M_R,RGB_M_SW,RGB_M_SN, XXXXXXX,           XXXXXXX, RGB_M_K, RGB_M_X, RGB_M_G, RGB_M_T, XXXXXXX, QK_BOOT,
-        XXXXXXX, KC_BRIU, RGB_TOG, RGB_RMOD, RGB_MOD, XXXXXXX, XXXXXXX,           XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+        XXXXXXX, RGB_M_P, RGB_M_B,  RGB_M_R,RGB_M_SW,RGB_M_SN, XXXXXXX,           XXXXXXX, RGB_M_K, RGB_M_X, RGB_M_G, RGB_M_T, XXXXXXX, XXXXXXX,
+        XXXXXXX, KC_BRIU, RGB_TOG, RGB_RMOD, RGB_MOD, XXXXXXX, XXXXXXX,           XXXXXXX, XXXXXXX, KC_MPRV, KC_MSTP, KC_MPLY, KC_MNXT, XXXXXXX,
         XXXXXXX, KC_BRID, RGB_HUI,  RGB_SAI, RGB_VAI, XXXXXXX, XXXXXXX,           XXXXXXX, XXXXXXX, DT_DOWN, DT_UP, DT_PRNT, XXXXXXX, XXXXXXX,
         XXXXXXX, XXXXXXX, RGB_HUD,  RGB_SAD, RGB_VAD, XXXXXXX,                             XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-        XXXXXXX, XXXXXXX, XXXXXXX,LED_LEVEL, XXXXXXX,          XXXXXXX,           XXXXXXX,          XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+        XXXXXXX, XXXXXXX, XXXXXXX,LED_LEVEL, XXXXXXX,          XXXXXXX,           QK_BOOT,          XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
         XXXXXXX, XXXXXXX, XXXXXXX,          _______, XXXXXXX, XXXXXXX
         )
 /*
